@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Nitro",
+  "description": "Nitro speeds up lumosity's QA process",
+  "version": "1.0.0",
+
+  "content_scripts": [{
+    "matches": [
+      "http://localhost:3000/*",
+      "http://www.lumosity.com/*"
+    ],
+
+    "js": [
+      "js/jquery.js",
+      "js/nitro.js",
+      "js/lumos.js"
+    ]
+  }]
+}
