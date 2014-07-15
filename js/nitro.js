@@ -1,44 +1,9 @@
-//Append menu to the very top of the page.
-//var $menu = $('<div>'),
-    //$createAccount = $('<a href="#">').text('Create account');
-
-//$menu.css({
-  //position: 'absolute',
-  //top: 0,
-  //left: 10,
-  //'z-index': 9999,
-  //padding: 10,
-  //background: '#eee'
-//});
-
-//$createAccount.appendTo($menu);
-
-//var routes = {
-  //'app/v5/personalization/*': function () {
-    //$menu.appendTo($('body'));
-    //$createAccount.bind('click', createAccount);
-  //},
-
-  //'/': function () {
-    //alert('homepage');
-  //}
-//};
-
-//$.each(routes, function (url, handler) {
-  //var route = new RegExp(url);
-  //if (route.test(window.location.pathname)) {
-    //handler.call();
-    //return false;
-  //}
-//});
-
-//function createAccount(e) {
-  //e.preventDefault();
-  //$('a[event_tracking_cta_id]')[0].click();
-//}
-
 (function () {
   var nitro = window.nitro = {};
+
+  nitro.config = {
+    menu: 'body'
+  };
 
   var Route = nitro.Route = function (url, handler) {
     this.url = url;
@@ -55,19 +20,40 @@
     })();
   };
 
+
   var Routes = nitro.Routes = function (routes) {
-    this.routeSet = $.map(routes, function (handler, url) {
+    Routes._routeSet = $.map(routes, function (handler, url) {
       return new Route(url, handler);
     });
   };
 
-  Routes.prototype.match = function (url) {
-    $.each(this.routeSet, function (_, route) {
+  Routes.match = function (url) {
+    $.each(this._routeSet, function (_, route) {
       if (route.matcher.test(url)) {
-        route.handler.call();
+        route.handler.call(this, Menu);
         return false;
       }
     });
   };
 
+  nitro.goTo = function (path) {
+    if (!nitro.isStarted) {
+      nitro.start();
+    }
+
+    Routes.match(path);
+  };
+
+  nitro.start = function () {
+    nitro.isStarted = true;
+    Menu.attach();
+  };
+
+  var Menu = nitro.Menu = $('<div/>', {
+    id: 'nitro-menu'
+  });
+
+  Menu.attach = function () {
+    Menu.appendTo($(nitro.config.menu));
+  };
 })();
