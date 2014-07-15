@@ -26,9 +26,13 @@ asyncTest('matches the root path without conflicts', function () {
 module('Menus');
 
 test('attaches a fixed menu at the top', function () {
-  ok($('#nitro-menu').length === 0, 'It starts blank');
+  this.fixture = $('#qunit-fixture');
+  this.fixture.empty();
+  nitro.config.menu = '#qunit-fixture';
+
+  ok(this.fixture.find('#nitro-menu').length === 0, 'It starts blank');
   nitro.Menu.attach();
-  ok($('#nitro-menu').length === 1, 'It appends the menu');
+  ok(this.fixture.find('#nitro-menu').length === 1, 'It appends the menu');
 });
 
 asyncTest('its passed as a callback argument', function () {

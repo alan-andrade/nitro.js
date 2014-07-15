@@ -1,6 +1,8 @@
 nitro.Routes({
   '/app/v5/personalization/*': function (menu) {
-    menu.text('Solve');
+    menu.appendLink('Personalization', function () {
+      $('#next-button').click();
+    });
   }
 });
 

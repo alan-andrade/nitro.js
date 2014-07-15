@@ -49,11 +49,25 @@
     Menu.attach();
   };
 
-  var Menu = nitro.Menu = $('<div/>', {
-    id: 'nitro-menu'
-  });
+  var Menu = nitro.Menu = (function () {
+    var $menu = $('<div/>', {
+      id: 'nitro-menu'
+    });
 
-  Menu.attach = function () {
-    Menu.appendTo($(nitro.config.menu));
-  };
+    this.attach = function () {
+      $menu.appendTo($(nitro.config.menu))
+    }
+
+    this.appendLink = function (text, listener) {
+      var $a = $('<a/>', {
+        text: text
+      });
+
+      $a.bind('click', listener);
+      $a.appendTo($menu);
+      return $a;
+    }
+
+    return this;
+  })()
 })();
